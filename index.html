@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Grocery List</title>
+  </head>
+  <body>
+    <div id="add-items">
+      <h2>Add Grocery Items</h2>
+      <form id="my-form" method="post" autocomplete="off">
+        <label for="item-input" ></label>
+        <input
+          type="text"
+          id="item-input"
+          placeholder="Enter Your Item"
+          name="newItem"
+        />
+        <button type="submit" id="add-btn">Submit Here</button>
+      </form>
+    </div>
+    <div id="display-div">
+      <h2 id="h2-display">Grocery Items</h2>
+      <div id="display-items"></div>
+      <button id="clear-btn">Clear Items</button>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
