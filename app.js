@@ -1,30 +1,22 @@
-const form = document.querySelector("#my-form");
-const clearBtn = document.querySelector("#clear-btn");
-const displayDiv = document.querySelector("#display-items");
+const form = $("#my-form");
+const clearBtn = $("#clear-btn");
+const displayDiv = $("#display-items");
 let newText = [];
 
 (function () {
-  if (localStorage.length > 0) {
-    if (localStorage.getItem("grocery list") !== null) {
-      let storage = localStorage.getItem("grocery list");
-      storage = JSON.parse(storage);
-      if (storage.length > 0) {
-        for (let i = 0; i < storage.length; i++) {
-          displayDiv.style.display = "grid";
-          newText.push(storage[i]);
-          const h3 = document.createElement("h3");
-          const createDelete = document.createElement("img");
-          displayDiv.append(h3, createDelete);
-          h3.innerText = newText[newText.length - 1];
-          createDelete.src = "./images/delete.png";
-          createDelete.classList.add("delete");
-          createDelete.classList.add("clear-all");
-          h3.classList.add("clear-all");
-        }
-      }
-    } else {
-      displayDiv.style.display = "none";
+  if (localStorage.getItem("grocery list") !== null) {
+    let storage = JSON.parse(localStorage.getItem("grocery list"));
+    for (let i = 0; i < storage.length; i++) {
+      displayDiv.css("display", "grid");
+      newText.push(storage[i]);
+      let textData = newText[newText.length - 1];
+      displayDiv.append($(`<h3>${textData}</h3>`).addClass("clear-all"));
+      displayDiv.append(
+        $(`<img src="./images/delete.png"></img>`).addClass("delete clear-all")
+      );
     }
+  } else {
+    displayDiv.css("display", "none");
   }
 })();
 
@@ -33,56 +25,51 @@ function getInput(ev) {
   let myForm = ev.target;
   let fd = new FormData(myForm);
   for (const [key, value] of fd) {
-    newText.push(value);
-  }
-  if (newText[newText.length - 1] != "") {
-    addElement();
+    if (value !== "") {
+      newText.push(value);
+      addElement();
+    }
   }
 }
 
 function addElement() {
-  displayDiv.style.display = "grid";
-  const h3 = document.createElement("h3");
-  const createDelete = document.createElement("img");
-  displayDiv.append(h3, createDelete);
-  h3.innerText = newText[newText.length - 1];
-  createDelete.src = "./images/delete.png";
-  createDelete.classList.add("delete");
-  createDelete.classList.add("clear-all");
-  h3.classList.add("clear-all");
+  const textValue = newText[newText.length - 1];
+  displayDiv.css("display", "grid");
+  displayDiv.append($(`<h3>${textValue}</h3>`).addClass("clear-all"));
+  displayDiv.append(
+    $(`<img src='./images/delete.png' alt='trash can image'/>`).addClass(
+      "delete clear-all"
+    )
+  );
   localStorage.setItem("grocery list", JSON.stringify(newText));
-  form.reset();
+  form.trigger("reset");
 }
 
 function removeElem(e) {
-  if (e.target.className === "delete clear-all") {
-    const h3 = e.target.previousSibling;
-    displayDiv.removeChild(e.target);
-    displayDiv.removeChild(h3);
-    let currentStorage = localStorage.getItem("grocery list");
-    let parsed = JSON.parse(currentStorage);
-    let removedLast = parsed.splice(-1);
-    newText = parsed;
-    localStorage.setItem("grocery list", JSON.stringify(parsed));
+  if ($(e.target).hasClass("delete clear-all")) {
+    const h3 = $(e.target).prev().remove();
+    $(e.target).remove();
+    let currentStorage = JSON.parse(localStorage.getItem("grocery list"));
+    let removedLast = currentStorage.splice(-1);
+    newText = currentStorage; // updating the newText array after we removed the associated item that was clicked
+    localStorage.setItem("grocery list", JSON.stringify(currentStorage)); // updating storage after removing an item
   }
   if (newText.length === 0) {
-    displayDiv.style.display = "none";
+    displayDiv.css("display", "none");
     clearItems();
   }
+  console.log(newText);
 }
 
 function clearItems() {
   localStorage.removeItem("grocery list");
-  const elements = document.querySelectorAll(".clear-all");
-  elements.forEach((item) => {
-    item.remove();
-  });
+  $(".clear-all").remove();
   newText = [];
-  displayDiv.style.display = "none";
+  displayDiv.css("display", "none");
 }
 
-form.addEventListener("submit", getInput);
+form.submit(getInput);
 
-clearBtn.addEventListener("click", clearItems);
+clearBtn.click(clearItems);
 
-displayDiv.addEventListener("click", removeElem);
+displayDiv.click(removeElem);

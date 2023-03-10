@@ -1,5 +1,7 @@
 :root {
   --backgroundColor: #012e40;
+  --textWhite: white;
+  --buttonColor: #026868;
 }
 
 * {
@@ -10,7 +12,7 @@
 
 body {
   background: var(--backgroundColor);
-  color: white;
+  color: var(--textWhite);
   text-align: center;
 }
 
@@ -27,7 +29,7 @@ h2 {
   height: 55px;
   width: 25%;
   font-size: 18px;
-  color: white;
+  color: var(--textWhite);
   background: var(--backgroundColor);
   border-right: var(--backgroundColor);
   border-left: var(--backgroundColor);
@@ -37,7 +39,7 @@ h2 {
 }
 
 #item-input::placeholder {
-  color: white;
+  color: var(--textWhite);
   opacity: 70%;
 }
 
@@ -46,10 +48,10 @@ h2 {
   height: 30px;
   display: block;
   margin: 1.5rem auto 0 auto;
-  background: #026868;
+  background: var(--buttonColor);
   border: 1px;
   border-radius: 3px;
-  color: white;
+  color: var(--textWhite);
 }
 
 #clear-btn {
@@ -57,14 +59,16 @@ h2 {
   height: 30px;
   display: block;
   margin: 1rem auto 0 auto;
-  background: #026868;
+  background: var(--buttonColor);
   border: 1px;
   border-radius: 3px;
-  color: white;
+  color: var(--textWhite);
 }
 
-button:hover {
-  background: #028679;
+#add-btn:hover,
+#clear-btn:hover {
+  background: #319999;
+  cursor: pointer;
 }
 
 #display-div {
